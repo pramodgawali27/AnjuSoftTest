@@ -1,0 +1,76 @@
+﻿@model UserAPP.Models.UserViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<div class="custom-form">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("Submit", "User", FormMethod.Post, new { role = "form", id = "FormSubmit" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            @Html.LabelFor(m => m.FirstName, new { @for = "FirstName" })
+                        </div>
+                        <div class="col-xs-9">
+                            @Html.TextBoxFor(m => m.FirstName, new { @type = "text", @class = "form-control" })
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            @Html.LabelFor(m => m.LastName, new { @for = "LastName" })
+                        </div>
+                        <div class="col-xs-9">
+                            @Html.TextBoxFor(m => m.LastName, new { @type = "text", @class = "form-control" })
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+                <button type="submit" class="btn btn-primary" id="Submit"> Submit Button</button>
+
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p id="updatedName"></p>
+        </div>
+    </div>
+  
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $("#Submit").click(function(e) {
+      e.preventDefault();
+        submitAction();
+    });
+
+
+    function submitAction() {
+        var data = $("#FormSubmit").serialize();
+        $.ajax({
+            url: "@Url.Action("Submit", "User")",
+            type: "POST",
+            data: data
+        })
+            .done(function (response) {
+                if (response !== null && response !== undefined) {
+                    $("#updatedName").html("Welcome "+response);
+                    }
+                })
+                .fail(function (errorThrown) {
+                    if (console) {
+                        console.log(errorThrown);
+                    }
+                })
+    }
+</script>

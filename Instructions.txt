@@ -1,0 +1,4 @@
+UserAPP is a front end and UserAPI is service project.
+Just host UserAPI project on IIS port 81 and it should work.
+
+Let me know if any issue , call 9167652827
